@@ -1,15 +1,18 @@
 {
-  "name": "penpal",
-  "version": "6.2.1",
+  "name": "@foyyay/penpal",
+  "version": "1.0.0",
   "description": "A promise-based library for communicating with iframes via postMessage.",
-  "author": "Aaron Hardy <aaron@aaronhardy.com>",
+  "author": "Foyyay <hello@foyyay.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Aaronius/penpal/issues"
+    "url": "https://github.com/foyyay/penpal/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Aaronius/penpal.git"
+    "url": "git+https://github.com/foyyay/penpal.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "iframe",
