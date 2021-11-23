@@ -25,6 +25,12 @@ type Options = {
   /**
    * Methods that may be called by the iframe.
    */
+  window?: Window;
+  /**
+   * The parent window of the iframe that will be receiving messages.
+   * Used for setting the connection event listener when the current window
+   * is not the same as the iframe's parent window.
+   */
   methods?: Methods;
   /**
    * The child origin to use to secure communication. If
@@ -105,13 +111,15 @@ export default <TCallSender extends object = CallSender>(
         }
       };
 
-      window.addEventListener(NativeEventType.Message, handleMessage);
+      const parentWindow = options.window ?? window;
+
+      parentWindow.addEventListener(NativeEventType.Message, handleMessage);
 
       log('Parent: Awaiting handshake');
       monitorIframeRemoval(iframe, destructor);
 
       onDestroy((error?: PenpalError) => {
-        window.removeEventListener(NativeEventType.Message, handleMessage);
+        parentWindow.removeEventListener(NativeEventType.Message, handleMessage);
 
         if (error) {
           reject(error);
