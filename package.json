@@ -1,6 +1,6 @@
 {
   "name": "@foyyay/penpal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A promise-based library for communicating with iframes via postMessage.",
   "author": "Foyyay <hello@foyyay.com>",
   "license": "MIT",
