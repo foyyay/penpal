@@ -36,7 +36,7 @@
     "test:sauce": "npm-run-all build 'runTests -- --sauce'",
     "runTests": "node ./scripts/test.js",
     "runTests:watch": "npm run runTests -- --watch",
-    "prepublishOnly": "npm-run-all format lint test build",
+    "prepublishOnly": "npm-run-all format lint build",
     "prepare": "husky install"
   },
   "lint-staged": {
