@@ -25,7 +25,7 @@ type Options = {
   /**
    * Methods that may be called by the iframe.
    */
-  window?: Window;
+  parentWindow?: Window;
   /**
    * The parent window of the iframe that will be receiving messages.
    * Used for setting the connection event listener when the current window
@@ -55,7 +55,14 @@ type Options = {
 export default <TCallSender extends object = CallSender>(
   options: Options
 ): Connection<TCallSender> => {
-  let { iframe, methods = {}, childOrigin, timeout, debug = false } = options;
+  let {
+    iframe,
+    parentWindow = window,
+    methods = {},
+    childOrigin,
+    timeout,
+    debug = false,
+  } = options;
 
   const log = createLogger(debug);
   const destructor = createDestructor('Parent', log);
@@ -78,6 +85,7 @@ export default <TCallSender extends object = CallSender>(
     originForSending
   );
   const handleAckMessage = handleAckMessageFactory(
+    parentWindow,
     serializedMethods,
     childOrigin,
     originForSending,
@@ -89,7 +97,7 @@ export default <TCallSender extends object = CallSender>(
     (resolve, reject) => {
       const stopConnectionTimeout = startConnectionTimeout(timeout, destroy);
       const handleMessage = (event: MessageEvent) => {
-        if (event.source !== iframe.contentWindow || !event.data) {
+        if (!event.data) {
           return;
         }
 
@@ -111,15 +119,16 @@ export default <TCallSender extends object = CallSender>(
         }
       };
 
-      const parentWindow = options.window ?? window;
-
       parentWindow.addEventListener(NativeEventType.Message, handleMessage);
 
       log('Parent: Awaiting handshake');
       monitorIframeRemoval(iframe, destructor);
 
       onDestroy((error?: PenpalError) => {
-        parentWindow.removeEventListener(NativeEventType.Message, handleMessage);
+        parentWindow.removeEventListener(
+          NativeEventType.Message,
+          handleMessage
+        );
 
         if (error) {
           reject(error);

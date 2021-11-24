@@ -31,7 +31,7 @@ export default (
   let destroyed = false;
 
   const handleMessageEvent = (event: MessageEvent) => {
-    if (event.source !== remote || event.data.penpal !== MessageType.Call) {
+    if (event.data.penpal !== MessageType.Call) {
       return;
     }
 

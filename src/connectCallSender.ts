@@ -77,11 +77,7 @@ export default (
       return new Promise((resolve, reject) => {
         const id = generateId();
         const handleMessageEvent = (event: MessageEvent) => {
-          if (
-            event.source !== remote ||
-            event.data.penpal !== MessageType.Reply ||
-            event.data.id !== id
-          ) {
+          if (event.data.penpal !== MessageType.Reply || event.data.id !== id) {
             return;
           }
 
@@ -121,6 +117,7 @@ export default (
           methodName,
           args,
         };
+
         remote.postMessage(callMessage, originForSending);
       });
     };

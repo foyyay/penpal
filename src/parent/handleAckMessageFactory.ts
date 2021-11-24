@@ -7,6 +7,7 @@ import connectCallSender from '../connectCallSender';
  * Handles an ACK handshake message.
  */
 export default (
+  parentWindow: Window,
   serializedMethods: SerializedMethods,
   childOrigin: string,
   originForSending: string,
@@ -34,7 +35,7 @@ export default (
 
     const info: WindowsInfo = {
       localName: 'Parent',
-      local: window,
+      local: parentWindow,
       remote: event.source as Window,
       originForSending: originForSending,
       originForReceiving: childOrigin,
